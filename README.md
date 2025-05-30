@@ -14,4 +14,9 @@ The workspace contains 4 folders by to begin with, where:
 
 Including, compiled output files will be generated in the `bin` folder by default.
 
-## Parts to be added
+## Parts to explore
+
+- Hash
+- multi-classes
+- encryption
+- ...
