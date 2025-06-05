@@ -12,16 +12,33 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
+import java.security.SecureRandom;
 import java.util.logging.*;
 import java.io.Console;
 import java.util.NoSuchElementException;
 
+/*
+ * New Java Project built for security purposes. It is conincidently a
+ * security tutorial to show best practices to be implemented as time
+ * goes on. It is an iterative application for simple CRUD interactions The program will handle 
+ * sensitive data and access that data from various throughput; access control. Other topics 
+ * we've prepared to undertake are: Encryption, Authentication Best Practices, Input validation, and 
+ * securely handling error messages. Honorable mention: class separation para control and access.
+ * 
+ ******** Developer: James Roberson
+ ******** Tools: VScode, Git
+ ******** Extensions: various java builds, and sql
+ ******** Date: May 24, 2025 - <<< on-going >>>
+ * 
+ */
 
 
 public class Gatekeeper
 {
     static Logger logger = Logger.getLogger(GFG.class.getName());
-    //static Scanner scan = new Scanner(System.in);
 
     static String data_DB_URL = "";
     static String data_signatory = "";
@@ -31,8 +48,7 @@ public class Gatekeeper
     public static List<String> retrieveAll(Connection conn) throws SQLException
     {
 
-        //Logger logger = Logger.getLogger(GFG.class.getName());
-        List<String> parse_data = new ArrayList<>();
+        List<String> parse_data = new ArrayList<>(100);
         String retrieve_ALL_query = "SELECT * FROM sensitive_data";
 
         try 
@@ -89,9 +105,6 @@ public class Gatekeeper
                     data_stmtI.setString(1, lil_webby);
                     data_stmtI.setString(2, address);
                     data_stmtI.executeUpdate();
-
-                    //data_stmtI.close();
-                    //scan.close();
                 } catch (Exception e) {
                     logger.warning("Database operation failed.");
                 }
@@ -106,9 +119,6 @@ public class Gatekeeper
                     data_stmtII.setString(1, money_money_money_moneyyy);
                     data_stmtII.setString(2, address);
                     data_stmtII.executeUpdate();
-
-                    //data_stmtII.close();
-                    //scan.close();
                 } catch (Exception e) {
                     logger.warning("Database operation failed.");
                 }
@@ -124,9 +134,6 @@ public class Gatekeeper
                     data_stmtIII.setString(1, handy_dandy);
                     data_stmtIII.setString(2, address);
                     data_stmtIII.executeUpdate();
-
-                    //data_stmtIII.close();
-                    //scan.close();
                 } catch (Exception e) {
                     logger.warning("Database operation failed.");
                 }
@@ -134,8 +141,6 @@ public class Gatekeeper
             }else{
                 System.out.println("Incorrect response.");
             }
-
-            //scan.close();
 
     }
 
@@ -167,8 +172,6 @@ public class Gatekeeper
 
         results.close();
         data_stmt.close();
-        //scan.close();
-
         } catch (Exception e) {
             logger.warning("Database operation failed.");
         }
@@ -183,7 +186,7 @@ public class Gatekeeper
         Scanner scan = new Scanner(System.in);
         String delete_query = "DELETE FROM sensitive_data WHERE web_addr=?";
 
-        //Gets input from user to specify record to delete
+        // Read input from user to specify record to delete
         System.out.print("Record to delete (url) : ");
         String uniform_resourse_locator = scan.nextLine();
 
@@ -192,8 +195,6 @@ public class Gatekeeper
             data_stmt.setString(1, uniform_resourse_locator);
             data_stmt.executeUpdate();
             data_stmt.close();
-            //scan.close();
-
         } catch (Exception e) {
             logger.warning("Database operation failed.");
         }
@@ -219,7 +220,6 @@ public class Gatekeeper
         try
         {   TimeUnit.SECONDS.sleep(2);
 
-  
             PreparedStatement data_stmt = conn.prepareStatement(insert_query);
 
             data_stmt.setString(1, url_entry);
@@ -228,10 +228,31 @@ public class Gatekeeper
             data_stmt.executeUpdate();
             
             data_stmt.close();
-            //scan.close();
         } catch (Exception e){
             logger.warning("Database operation failed.");
         }
+
+    }
+
+    public static String passTheSalt(int length)
+    {
+        // Generate a random character to pass into a byte array
+        SecureRandom sr22 = new SecureRandom();
+        byte[] sault = new byte[length];
+        
+        // Ingest until the desired length (Specified in main class)
+        sr22.nextBytes(sault);
+        return Base64.getEncoder().encodeToString(sault);
+    }
+
+    public static String hashStew(String password, String salt) throws NoSuchAlgorithmException
+    {
+        // Set crypto algo the hash func will use to structure resulting hash
+        MessageDigest stomach = MessageDigest.getInstance("SHA-256");
+        String hash_potatoes = salt + password; // Prepend salt
+        
+        byte[] hash = stomach.digest(hash_potatoes.getBytes());
+        return Base64.getEncoder().encodeToString(hash); // Encode final string to pass back to main
 
     }
 
@@ -244,6 +265,24 @@ public class Gatekeeper
 
     public static void main(String[] args) throws FileNotFoundException, IOException, InterruptedException, NoSuchElementException
     {
+        // Use the main class to secure the hash for individual users (i.e. accounts
+        // I've set up for this demo) but hashing is mainly conducted to instantiate 
+        // new user passwords and is done with SHA-256 as shown below. 
+                /*           
+                *  try 
+                * {
+                        String quick_pass = "<insert>";
+                        String salt = passTheSalt(16); //16 bytes == 128-bit salt ##recommended
+                        String hash_ = hashStew(quick_pass, salt);
+
+                        System.out.println("Salt: " + salt);
+                        System.out.println("Hashed Password: " + hash_);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                */
+
+
         boolean keepGoing = false;
         Console console = System.console();
 
@@ -270,40 +309,48 @@ public class Gatekeeper
             System.out.println("\n*****************************************************************\n");
             System.out.println("\n//// Terminal Connection //// DB: ke93k*6h*v@456457/in/connection.reverb/nevermore_db");
 
-              //Prompt for login
+              // Prompt for login
               System.out.print("\nEnter username: ");
               String signatore = scan.nextLine();
               char[] passwordChars = console.readPassword("Enter Password: ");
               String hanjock = new String(passwordChars);
 
-                    //Pull resources
+                    // Pull resources
                     props.load(new FileInputStream("config.properties"));
+            
 
                 try 
                 {
                     do
                     {
-                        //Connect to authenticator database
+                        // Connect to authenticator database
                         String authenticator_url = props.getProperty("auth_url");
                         String authenticator_user = props.getProperty("auth_user");
                         String authenticator_pass = props.getProperty("auth_pass");
+                        String sault = props.getProperty("main_sault");
 
                         Connection authenticator_bond = DriverManager.getConnection(authenticator_url, authenticator_user, authenticator_pass);
                         System.out.println("\nProcessing... \n"); TimeUnit.SECONDS.sleep(3);
 
-                        //Set parameters based on given input
-                        String authenticator_query = "SELECT * FROM auth_table WHERE auth_user = ? AND auth_pass = ?";
+                        // Set parameters based on given input
+                        String authenticator_query = "SELECT * FROM authenticator_credentials_locale WHERE auth_usr = ? AND auth_pass = ?";
                         PreparedStatement authenticator_stmt = authenticator_bond.prepareStatement(authenticator_query);
-                        authenticator_stmt.setString(1, signatore);
-                        authenticator_stmt.setString(2, hanjock);
+                        
+                        // Decode hashed password and set parameters
+                        // Salt can be ingested using ResultSet but to save time I've decided to 
+                        // and use a variable.
+                        // <<< CAVEAT: code must be modified upon switching user accounts >>>
+                        //      ## Temporary Fix: if-statment to toggle between the accounts dynamically
+                        String decoded = Gatekeeper.hashStew(hanjock, sault);
+                            authenticator_stmt.setString(1, signatore);
+                            authenticator_stmt.setString(2, decoded);
+                        
+                        
                         ResultSet authenticator_results = authenticator_stmt.executeQuery();
-
-                        //Scanner scanII = new Scanner(System.in);
                         if(authenticator_results.next())
                         {
-                            //Scanner scanII = new Scanner(System.in);
 
-                            //System.out.println("\n\t\t <<<Open Sessame>>> "); Quick check...
+                                        // System.out.println("\n\t\t <<<Open Sessame>>> "); Quick check...
                             System.out.println("\t\t//Active Connection "); TimeUnit.SECONDS.sleep(1);
                             System.out.println("\n");
 
@@ -321,13 +368,12 @@ public class Gatekeeper
                                 case 0 :
                                     try
                                     {
-                                        //Now, connect to sensitive information DB to execute desired functions
+                                        // Now, connect to sensitive information DB to execute desired functions
                                         data_DB_URL = props.getProperty("DB_URL");
                                         data_signatory = props.getProperty("data_user");
                                         data_monogram = props.getProperty("data_pass");
                                         data_bond = DriverManager.getConnection(data_DB_URL, data_signatory, data_monogram);
 
-                                        //System.out.println("\n<<Connected>>\n");
                                         System.out.println("\n######################################\n");
                                         System.out.println("Input Credentials --> ");
                             
@@ -336,7 +382,6 @@ public class Gatekeeper
                                         System.out.println("\n######################################\n");
                                 
                                         data_bond.close();
-
                                     }catch (Exception e) {
                                         logger.warning("Database operation failed.");
                                     }
@@ -362,7 +407,6 @@ public class Gatekeeper
 
                                         results.clear();
                                         data_bond.close();
-
                                     }catch (Exception e){
                                         logger.warning("Database operation failed.");
                                     }
@@ -380,8 +424,6 @@ public class Gatekeeper
                                         Gatekeeper.update_acct(data_bond);
                                         System.out.println("\n\t <<< Record Updated >>> ");
                                         System.out.println("\n######################################\n");
-
-
                                     } catch (Exception e) {
                                         logger.warning("Database operation failed.");
                                     }
@@ -422,7 +464,6 @@ public class Gatekeeper
                                         Gatekeeper.delete_acct(data_bond);
                                         System.out.println("\n\t <<< Record deleted >>>");
                                         System.out.println("\n######################################\n");
-                                    
                                     } catch (Exception e) {
                                         logger.warning("Database operation failed.");
                                     }
@@ -435,7 +476,6 @@ public class Gatekeeper
                         }
                         } else {
                             System.out.println("Access Denied!\n"); TimeUnit.SECONDS.sleep(2);
-                            //scanII.close();
                         }
 
                         System.out.print("\n Would you like to conduct more operations? y/n : ");
@@ -455,15 +495,11 @@ public class Gatekeeper
                     authenticator_results.close();
                     authenticator_stmt.close();
                     authenticator_bond.close();
-                    //master_scanner.close();
-                    //scanII.close();
                     } while(keepGoing);
                 } catch (Exception e)
                 {
-                    e.printStackTrace();
-                    //logger.warning("Database operation failed.");
-                }            
-                //scanI.close();
+                    logger.warning("Database operation failed.");
+                }
 
     }
 }
