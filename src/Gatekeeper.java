@@ -29,7 +29,7 @@ import java.util.NoSuchElementException;
  * securely handling error messages. Honorable mention: class separation para control and access.
  * 
  ******** Developer: James Roberson
- ******** Tools: VScode, Git
+ ******** Tools: Java kit, SQL, Git
  ******** Extensions: various java builds, and sql
  ******** Date: May 24, 2025 - <<< on-going >>>
  * 
