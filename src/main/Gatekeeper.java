@@ -17,6 +17,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.security.SecureRandom;
 import java.util.logging.*;
+
+import db.DBConnections;
+
 import java.io.Console;
 import java.util.NoSuchElementException;
 
@@ -296,6 +299,7 @@ public class Gatekeeper
         @SuppressWarnings("resource")
         Scanner scan = new Scanner(System.in);
         Properties props = new Properties();
+        DBConnections bonnect = new DBConnections();
 
             System.out.println("\n*****************************************************************\n");
 
@@ -323,34 +327,12 @@ public class Gatekeeper
                 {
                     do
                     {
-                        // Connect to authenticator database
-                        String authenticator_url = props.getProperty("auth_url");
-                        String authenticator_user = props.getProperty("auth_user");
-                        String authenticator_pass = props.getProperty("auth_pass");
-                        String sault = props.getProperty("main_sault");
 
-                        Connection authenticator_bond = DriverManager.getConnection(authenticator_url, authenticator_user, authenticator_pass);
-                        System.out.println("\nProcessing... \n"); TimeUnit.SECONDS.sleep(3);
-
-                        // Set parameters based on given input
-                        String authenticator_query = "SELECT * FROM authenticator_credentials_locale WHERE auth_usr = ? AND auth_pass = ?";
-                        PreparedStatement authenticator_stmt = authenticator_bond.prepareStatement(authenticator_query);
-                        
-                        // Decode hashed password and set parameters
-                        // Salt can be ingested using ResultSet but to save time I've decided to 
-                        // and use a variable.
-                        // <<< CAVEAT: code must be modified upon switching user accounts >>>
-                        //      ## Temporary Fix: if-statment to toggle between the accounts dynamically
-                        String decoded = Gatekeeper.hashStew(hanjock, sault);
-                            authenticator_stmt.setString(1, signatore);
-                            authenticator_stmt.setString(2, decoded);
-                        
-                        
-                        ResultSet authenticator_results = authenticator_stmt.executeQuery();
+                        ResultSet authenticator_results = bonnect.auth_db_conn(signatore, hanjock);
                         if(authenticator_results.next())
                         {
 
-                                        // System.out.println("\n\t\t <<<Open Sessame>>> "); Quick check...
+                            // System.out.println("\n\t\t <<<Open Sessame>>> "); Quick check...
                             System.out.println("\t\t//Active Connection "); TimeUnit.SECONDS.sleep(1);
                             System.out.println("\n");
 
@@ -492,9 +474,9 @@ public class Gatekeeper
                                 System.out.println("\n<<< Qué .... >>> ");
                             }
                             
-                    authenticator_results.close();
-                    authenticator_stmt.close();
-                    authenticator_bond.close();
+                    //authenticator_results.close();
+                    //authenticator_stmt.close();
+                    //authenticator_bond.close();
                     } while(keepGoing);
                 } catch (Exception e)
                 {
