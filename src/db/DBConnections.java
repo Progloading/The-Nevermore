@@ -68,7 +68,7 @@ public class DBConnections {
         return authenticator_results;
     }
 
-    public Connection secrets_dbConnect() throws SQLException
+    public Connection secretdbConnect() throws SQLException
     {
         String data_DB_URL = poe.getProperty("DB_URL");
         String data_signatory = poe.getProperty("data_user");
