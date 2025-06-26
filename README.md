@@ -18,19 +18,33 @@ This project is a **step-by-step security enhancement of a Java-based applicatio
 ##      <<< Project Structure >>>
 
 The-Nevermmore/
+
 ├── .gitignore
+
 ├── LICENSE
+
 ├── README.md
+
 ├── config.example.properties <<<< Example config file (no secrets)
+
 ├── config.properties <<<< Actual config (NOT committed)
+
 ├── src/
+
 │ ├── Main.java
+
 │ ├── db/
+
 │ │ ├── DBConnection.java
+
 │ │ └── SensitiveDAO.java
+
 │ ├── security/
+
 │ │ └── AESUtil.java
+
 │ └── AccessControl/
+
 │ └── ManagerOfAccess.java
 
 -------------------------------------------------------------------------
