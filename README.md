@@ -30,21 +30,16 @@ The-Nevermmore/
 ├── config.properties <<<< Actual config (NOT committed)
 
 ├── src/
-
 │ ├── Main.java
 
 │ ├── db/
-
 │ │ ├── DBConnection.java
-
 │ │ └── SensitiveDAO.java
 
 │ ├── security/
-
 │ │ └── AESUtil.java
 
 │ └── AccessControl/
-
 │ └── ManagerOfAccess.java
 
 -------------------------------------------------------------------------
