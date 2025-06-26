@@ -39,6 +39,7 @@ public class DBConnections {
         
 
         // Connect to authenticator database using the account settings that have been set up
+        // Also, force SSL encryption on the connection
             String authenticator_url = poe.getProperty("auth_url");
             String authenticator_user = poe.getProperty("auth_user");
             String authenticator_pass = poe.getProperty("auth_pass");
@@ -49,9 +50,7 @@ public class DBConnections {
 
         // Set parameters based on given input
         String authenticator_query = "SELECT role FROM authenticator_credentials_locale WHERE auth_usr = ? AND auth_pass = ?";
-        //String role_query = "SELECT role FROM authenticator_credentials_locale WHERE auth_usr = ? AND auth_pass = ?";
         PreparedStatement authenticator_stmt = authenticator_bond.prepareStatement(authenticator_query);
-        //PreparedStatement role_stmt = authenticator_bond.prepareStatement(role_query);
                         
         
         // Decode hashed password and set parameters

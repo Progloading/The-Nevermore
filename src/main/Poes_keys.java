@@ -15,6 +15,22 @@ import AccessControl.IngressMGMT;
 public class Poes_keys 
 {
     static Logger logger = Logger.getLogger(GFG.class.getName());
+
+    public String randomPasswordgen()
+    {
+        int length = 11;
+        String password = "ABCDEFGHIJKLMNOPQRSTUZWXYZ"
+                        + "0123456789"
+                        + "abcdefghijklmnopqrstuvwxyz"
+                        + "$_&#-";
+                        
+        StringBuilder build = new StringBuilder(length);
+        for(int i = 0; i < length; i++)
+        {
+            int indicator = (int) (password.length() * Math.random());
+            build.append(password.charAt(indicator));
+        } return build.toString();
+    }
     
     public List<String> retrieveAll(Connection conn, String role) throws SQLException
     {

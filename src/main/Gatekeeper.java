@@ -33,7 +33,7 @@ import db.DBConnections;
  * securely handling error messages. Honorable mention: class separation para control and access.
  * 
  ******** Developer: James Roberson
- ******** Tools: Java kit, SQL, Git
+ ******** Tools: Java kit, MySQL, JDBC, AES encryption, y mas
  ******** Extensions: various java builds, and sql
  ******** Date: May 24, 2025 - <<< on-going >>>
  * 
@@ -236,9 +236,9 @@ public class Gatekeeper
                                 break;
 
                                 case 5 :
-
-                                System.out.println("This is for case 5 - generate random key ");
-
+                                    // rudimentary implementation of the random generator.
+                                    System.out.println("Generating Random password... ");
+                                    key.randomPasswordgen();
                         }
                         } else {
                             System.out.println("Access Denied!\n"); TimeUnit.SECONDS.sleep(2);
