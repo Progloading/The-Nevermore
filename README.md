@@ -80,17 +80,19 @@ The-Nevermmore/
 
 
 
-## <<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Getting Started >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+## <<<<<<<<<<<<<<<<<<<< Getting Started >>>>>>>>>>>>>>>>>>>>>>>>>
 
 1. **Clone the repository**
    
         <<< In terminal... >>>
+        
         git clone https://github.com/Progloading/The-Nevermore.git
         cd The-Nevermmore
 
 2. **Rename and Configure your DB connection**
 
         <<< In terminal... >>>
+
         cp config.exxample.properties config.properties
 
     - Fill in your specific DB credentials and connection info inside config.properties
@@ -98,5 +100,6 @@ The-Nevermmore/
 3. **Compile and Run**
 
         <<< In terminal... >>>
+
         javax -d bin src/**/*.java
         java -cp bin Main
