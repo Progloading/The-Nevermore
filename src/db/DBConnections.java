@@ -48,8 +48,10 @@ public class DBConnections {
         System.out.println("\nProcessing... \n");
 
         // Set parameters based on given input
-        String authenticator_query = "SELECT * FROM authenticator_credentials_locale WHERE auth_usr = ? AND auth_pass = ?";
+        String authenticator_query = "SELECT role FROM authenticator_credentials_locale WHERE auth_usr = ? AND auth_pass = ?";
+        //String role_query = "SELECT role FROM authenticator_credentials_locale WHERE auth_usr = ? AND auth_pass = ?";
         PreparedStatement authenticator_stmt = authenticator_bond.prepareStatement(authenticator_query);
+        //PreparedStatement role_stmt = authenticator_bond.prepareStatement(role_query);
                         
         
         // Decode hashed password and set parameters

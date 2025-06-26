@@ -10,12 +10,19 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.*;
 
+import AccessControl.IngressMGMT;
+
 public class Poes_keys 
 {
     static Logger logger = Logger.getLogger(GFG.class.getName());
     
-    public List<String> retrieveAll(Connection conn) throws SQLException
+    public List<String> retrieveAll(Connection conn, String role) throws SQLException
     {
+        IngressMGMT access = new IngressMGMT();
+        if(!access.hasPermission(role, "READ1"))
+        {
+            System.out.println("ACCESS DENIED: insufficent privileges to access this resource. ");
+        }
 
         List<String> parse_data = new ArrayList<>(100);
         String retrieve_ALL_query = "SELECT * FROM sensitive_data";
@@ -41,8 +48,14 @@ public class Poes_keys
 
     }
 
-    public void update_acct(Connection conn) throws SQLException
+    public void update_acct(Connection conn, String role) throws SQLException
     {
+        IngressMGMT access = new IngressMGMT();
+        if(!access.hasPermission(role, "UPDATE"))
+        {
+            System.out.println("ACCESS DENIED: insufficient privileges to access this resource. ");
+            return;
+        }
         @SuppressWarnings("resource")
         Scanner scan = new Scanner(System.in);
         String update_query_addr = "UPDATE sensitive_data SET web_addr=? WHERE web_addr=?";
@@ -113,8 +126,13 @@ public class Poes_keys
 
     }
 
-    public List<String> retrieve_acct(Connection conn) throws SQLException
+    public List<String> retrieve_acct(Connection conn, String role) throws SQLException
     {
+        IngressMGMT access = new IngressMGMT();
+        if(!access.hasPermission(role, "READ2"))
+        {
+            System.out.println("ACCESS DENIED: insufficient privileges to access this resource. ");
+        }
         List<String> parse_data = new ArrayList<>(100);
         @SuppressWarnings("resource")
         Scanner scan = new Scanner(System.in);
@@ -149,8 +167,14 @@ public class Poes_keys
 
     }
 
-    public void delete_acct(Connection conn) throws SQLException
+    public void delete_acct(Connection conn, String role) throws SQLException
     {
+        IngressMGMT access = new IngressMGMT();
+        if(!access.hasPermission(role, "DELETE"))
+        {
+            System.out.println("ACCESS DENIED: insufficient privileges to accss this resource. ");
+            return;
+        }
         @SuppressWarnings("resource")
         Scanner scan = new Scanner(System.in);
         String delete_query = "DELETE FROM sensitive_data WHERE web_addr=?";
@@ -169,9 +193,15 @@ public class Poes_keys
         }
     }
 
-    public void insert_acct(Connection conn) throws SQLException
+    public void insert_acct(Connection conn, String role) throws SQLException
     {
+        IngressMGMT access = new IngressMGMT();
 
+        if(!access.hasPermission(role, "INSERT"))
+        {
+            System.out.println("ACCESS DENIED: insufficient privileges to access this resource. ");
+            return;
+        }
         @SuppressWarnings("resource")
         Scanner scan = new Scanner(System.in);
         String insert_query = "INSERT INTO sensitive_data (web_addr, monogram, signatory) VALUES (?, ?, ?)";

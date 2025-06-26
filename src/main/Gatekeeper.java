@@ -23,6 +23,7 @@ import db.DBConnections;
 
 
 
+
 /*
  * New Java Project built for security purposes. It is conincidently a
  * security tutorial to show best practices to be implemented as time
@@ -119,8 +120,11 @@ public class Gatekeeper
                     {
                         ResultSet authenticator_results = bonnect.auth_db_conn(signatore, hanjock);
                         System.out.println("\t\t// Active Connection "); TimeUnit.SECONDS.sleep(1);
+
+
                         if(authenticator_results.next())
                         {
+                            String role = authenticator_results.getString("role");
             
                             System.out.println("\nWhat would you like to do?\n");
                             System.out.println("0: Insert a record");
@@ -144,7 +148,7 @@ public class Gatekeeper
                                         System.out.println("\n######################################\n");
                                         
                                         System.out.println("Input Credentials --> ");
-                                        key.insert_acct(POE);
+                                        key.insert_acct(POE, role);
                                         System.out.println("\n\t <<< Entry added >>>");
                                         
                                         System.out.println("\n######################################\n");
@@ -160,7 +164,7 @@ public class Gatekeeper
                                         POE = bonnect.secretdbConnect();
 
                                         System.out.println("\n######################################\n");                                    
-                                        results = key.retrieve_acct(POE);
+                                        results = key.retrieve_acct(POE, role);
 
                                             System.out.println("\t" + "ID: " + results.get(0));
                                             System.out.println("\t" + "Location: " + results.get(1));
@@ -182,7 +186,7 @@ public class Gatekeeper
 
                                         System.out.println("\n######################################\n");
                                         
-                                        key.update_acct(POE);
+                                        key.update_acct(POE, role);
                                         System.out.println("\n\t <<< Record Updated >>> ");
                                         
                                         System.out.println("\n######################################\n");                                  
@@ -199,7 +203,7 @@ public class Gatekeeper
 
                                         System.out.println("\n######################################\n");
                                         
-                                        results = key.retrieveAll(POE);
+                                        results = key.retrieveAll(POE, role);
                                         System.out.println("Retrieving data, stand by...\n"); TimeUnit.SECONDS.sleep(2);
                                         for(String s : results)
                                         {
@@ -221,7 +225,7 @@ public class Gatekeeper
         
                                         System.out.println("\n######################################\n");
                                         
-                                        key.delete_acct(POE);
+                                        key.delete_acct(POE, role);
                                         System.out.println("\n\t <<< Record deleted >>>");
                                         
                                         System.out.println("\n######################################\n");
