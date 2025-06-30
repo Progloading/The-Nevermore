@@ -3,7 +3,6 @@ package main; // Package for runtime functions
 // Exceptions y SQL conn Manager ###########
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Console;
@@ -11,7 +10,6 @@ import java.util.NoSuchElementException;
 
 // UTIL Imports ########################
 import java.util.Scanner;
-import java.util.Properties;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -87,7 +85,6 @@ public class Gatekeeper
         // Objects/structures List ##################################
         @SuppressWarnings("resource")
         Scanner scan = new Scanner(System.in);
-        Properties props = new Properties();
         DBConnections bonnect = new DBConnections();
         Poes_keys key = new Poes_keys();
         kovacs_keys latchKey = new kovacs_keys();
@@ -111,10 +108,6 @@ public class Gatekeeper
               char[] passwordChars = console.readPassword("Enter Password: ");
               String hanjock = new String(passwordChars);
 
-                    // Pull resources
-                    props.load(new FileInputStream("config.properties"));
-            
-
                 try 
                 {   
                     do
@@ -134,8 +127,9 @@ public class Gatekeeper
                             System.out.println("3: Retrieve (ALL) ");
                             System.out.println("4: Delete a record");
                             System.out.println("5: Create new user");
-                            System.out.println("6: Generate a random passphrase\n");
-                            System.out.print("Indicate by selecting a number (0-6): ");
+                            System.out.println("6: Delete user");
+                            System.out.println("7: Generate a random passphrase\n");
+                            System.out.print("Indicate by selecting a number (0-7): ");
                             int response = scan.nextInt();
                             
                             switch(response)
@@ -148,7 +142,9 @@ public class Gatekeeper
                                         POE = bonnect.secretdbConnect();
                                         
                                         System.out.println("\n######################################\n");
+                                        
                                         key.insert_acct(POE, role);
+                                        
                                         System.out.println("\n######################################\n");
                                 
                                     } catch (Exception e) {
@@ -183,9 +179,8 @@ public class Gatekeeper
                                         POE = bonnect.secretdbConnect();
 
                                         System.out.println("\n######################################\n");
-                                        
+                                       
                                         key.update_acct(POE, role);
-                                        System.out.println("\n\t <<< Record Updated >>> ");
                                         
                                         System.out.println("\n######################################\n");                                  
                                     
@@ -202,7 +197,6 @@ public class Gatekeeper
                                         System.out.println("\n######################################\n");
                                         
                                         results = key.retrieveAll(POE, role);
-                                        System.out.println("Retrieving data, stand by...\n"); TimeUnit.SECONDS.sleep(2);
                                         for(String s : results)
                                         {
                                             System.out.println("\t" + s);
@@ -222,9 +216,8 @@ public class Gatekeeper
                                         POE = bonnect.secretdbConnect();
         
                                         System.out.println("\n######################################\n");
-                                        
+
                                         key.delete_acct(POE, role);
-                                        System.out.println("\n\t <<< Record deleted >>>");
                                         
                                         System.out.println("\n######################################\n");
                                     
@@ -238,7 +231,9 @@ public class Gatekeeper
                                         POE = bonnect.sensitive_secretdb_auth();
 
                                         System.out.println("\n######################################\n");
+                                        
                                         latchKey.the_creation(POE, role);
+                                        
                                         System.out.println("\n######################################\n");
                                         
 
@@ -247,10 +242,14 @@ public class Gatekeeper
                                     }
                                 break;
 
-                                case 6 :
-                                    // rudimentary implementation of the random generator.
-                                    System.out.println("Generating Random password... ");
-                                    key.randomPasswordgen();
+                                case 6:
+                                    System.out.println("User TBD (NOT DATA INFORMATION)");
+                                break;
+
+                                case 7 :
+                                    // Rudimentary implementation of the random generator.
+                                    String new_key = key.randomPasswordgen();
+                                    System.out.println("This is the new key: " + new_key);
                                 break;
                         }
                         } else {

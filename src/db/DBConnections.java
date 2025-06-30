@@ -43,7 +43,8 @@ public class DBConnections {
             String authenticator_url = poe.getProperty("auth_url");
             String authenticator_user = poe.getProperty("auth_user");
             String authenticator_pass = poe.getProperty("auth_pass");
-        // This will be implemented as it's own separate function in later days, sault ==>    
+        
+            // This will be implemented as it's own function in later days, sault. For now, manual it is ==>    
             String sault = poe.getProperty("root_saultKING"); 
 
 

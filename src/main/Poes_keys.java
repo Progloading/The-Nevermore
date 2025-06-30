@@ -1,6 +1,5 @@
 package main;
 
-import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,8 +11,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.*;
 
 import AccessControl.IngressMGMT;
-import hashlings.hashIT;
-
 
 public class Poes_keys 
 {
@@ -21,6 +18,7 @@ public class Poes_keys
 
     public String randomPasswordgen()
     {
+        System.out.println("Generating Random password... ");
         int length = 11;
         String password = "ABCDEFGHIJKLMNOPQRSTUZWXYZ"
                         + "0123456789"
@@ -32,10 +30,37 @@ public class Poes_keys
         {
             int indicator = (int) (password.length() * Math.random());
             build.append(password.charAt(indicator));
-        } return build.toString();
+        } 
+        return build.toString();
     }
-    
-    public List<String> retrieveAll(Connection conn, String role) throws SQLException
+
+    public void delete_acct(Connection conn, String role) throws SQLException
+    {
+        IngressMGMT access = new IngressMGMT();
+        if(!access.hasPermission_ACCT(role, "DELETE_ACCT"))
+        {
+            System.out.println("ACCESS DENIED: insufficient privileges to accss this resource. ");
+            return;
+        }
+        @SuppressWarnings("resource")
+        Scanner scan = new Scanner(System.in);
+        String delete_query = "DELETE FROM sensitive_data WHERE web_addr=?";
+
+        // Read input from user to specify record to delete
+        System.out.print("Record to delete (url) : ");
+        String uniform_resourse_locator = scan.nextLine();
+
+        try {
+            PreparedStatement data_stmt = conn.prepareStatement(delete_query);
+            data_stmt.setString(1, uniform_resourse_locator);
+            data_stmt.executeUpdate();
+            data_stmt.close();
+        } catch (Exception e) {
+            logger.warning("Database operation failed.");
+        }
+    }
+
+    public List<String> retrieveAll(Connection conn, String role) throws SQLException, InterruptedException
     {
         IngressMGMT access = new IngressMGMT();
         if(!access.hasPermission_ACCT(role, "READ_ALL"))
@@ -43,6 +68,8 @@ public class Poes_keys
             System.out.println("ACCESS DENIED: insufficent privileges to access this resource. ");
         }
 
+        System.out.println("Retrieving data, stand by...\n"); TimeUnit.SECONDS.sleep(2);
+                                        
         List<String> parse_data = new ArrayList<>(100);
         String retrieve_ALL_query = "SELECT * FROM sensitive_data";
 
@@ -142,6 +169,7 @@ public class Poes_keys
             }else{
                 System.out.println("Incorrect response.");
             }
+            System.out.println("\n\t <<< Record Updated >>> ");
 
     }
 
@@ -185,33 +213,7 @@ public class Poes_keys
         return parse_data;
 
     }
-
-    public void delete_acct(Connection conn, String role) throws SQLException
-    {
-        IngressMGMT access = new IngressMGMT();
-        if(!access.hasPermission_ACCT(role, "DELETE_ACCT"))
-        {
-            System.out.println("ACCESS DENIED: insufficient privileges to accss this resource. ");
-            return;
-        }
-        @SuppressWarnings("resource")
-        Scanner scan = new Scanner(System.in);
-        String delete_query = "DELETE FROM sensitive_data WHERE web_addr=?";
-
-        // Read input from user to specify record to delete
-        System.out.print("Record to delete (url) : ");
-        String uniform_resourse_locator = scan.nextLine();
-
-        try {
-            PreparedStatement data_stmt = conn.prepareStatement(delete_query);
-            data_stmt.setString(1, uniform_resourse_locator);
-            data_stmt.executeUpdate();
-            data_stmt.close();
-        } catch (Exception e) {
-            logger.warning("Database operation failed.");
-        }
-    }
-
+    
     public void insert_acct(Connection conn, String role) throws SQLException
     {
         IngressMGMT access = new IngressMGMT();
