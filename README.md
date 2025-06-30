@@ -69,15 +69,6 @@ The-Nevermmore/
 - AES (Javax.crypto) for encryption
 - VS Code with SQLTools extension
 
-##      <<< Technologies Used >>>
-
-- Java (JDK 17+)
-- JDBC (MySQL)
-- MySQL Database
-- jBCrypt for password hashing
-- AES (Javax.crypto) for encryption
-- VS Code with SQLTools extension
-
 
 
 ## <<<<<<<<<<<<<<<<<<<< Getting Started >>>>>>>>>>>>>>>>>>>>>>>>>

@@ -43,13 +43,15 @@ public class DBConnections {
             String authenticator_url = poe.getProperty("auth_url");
             String authenticator_user = poe.getProperty("auth_user");
             String authenticator_pass = poe.getProperty("auth_pass");
-            String sault = poe.getProperty("main_sault"); 
+        // This will be implemented as it's own separate function in later days, sault ==>    
+            String sault = poe.getProperty("root_saultKING"); 
+
 
         Connection authenticator_bond = DriverManager.getConnection(authenticator_url, authenticator_user, authenticator_pass); TimeUnit.SECONDS.sleep(3);
         System.out.println("\nProcessing... \n");
 
         // Set parameters based on given input
-        String authenticator_query = "SELECT role FROM authenticator_credentials_locale WHERE auth_usr = ? AND auth_pass = ?";
+        String authenticator_query = "SELECT role, auth_SALT FROM authenticator_credentials_locale WHERE auth_usr = ? AND auth_pass = ?";
         PreparedStatement authenticator_stmt = authenticator_bond.prepareStatement(authenticator_query);
                         
         
@@ -66,7 +68,25 @@ public class DBConnections {
         
         authenticator_results = authenticator_stmt.executeQuery();
 
+
         return authenticator_results;
+    }
+
+    public Connection sensitive_secretdb_auth() throws SQLException
+    {
+        String sensitive_data_DB_URL = poe.getProperty("auth_url");
+        String sensitive_data_rsu = poe.getProperty("auth_user");
+        String sensitive_data_dwp = poe.getProperty("auth_pass");
+
+        try 
+        {
+            Connection data_bond = DriverManager.getConnection(sensitive_data_DB_URL, sensitive_data_rsu, sensitive_data_dwp); 
+            return data_bond;
+        
+        } catch (SQLException e) {
+            System.err.println("ERROR: " + e.getMessage());
+            throw e;
+        }
     }
 
     public Connection secretdbConnect() throws SQLException
@@ -85,5 +105,5 @@ public class DBConnections {
             throw e;
         }
     }
-    
+
 }

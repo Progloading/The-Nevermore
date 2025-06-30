@@ -6,7 +6,7 @@ import java.security.SecureRandom;
 import java.util.Base64;
 
 public class hashIT {
-    public static String passTheSalt(int length)
+    public String passTheSalt(int length)
     {
         // Generate a random character to pass into a byte array
         SecureRandom sr22 = new SecureRandom();
@@ -19,8 +19,8 @@ public class hashIT {
 
     public String hashStew(String password, String salt) throws NoSuchAlgorithmException
     {
-        // Set crypto algo the hash func will use to structure resulting hash
-        MessageDigest stomach = MessageDigest.getInstance("SHA-256");
+        // Set crypto algo that the hash func will use to structure resulting hash
+        MessageDigest stomach = MessageDigest.getInstance("SHA-256"); // Next Up: Bcrypt
         String hash_potatoes = salt + password; // Prepend salt
         
         byte[] hash = stomach.digest(hash_potatoes.getBytes());

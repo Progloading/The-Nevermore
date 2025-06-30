@@ -90,6 +90,7 @@ public class Gatekeeper
         Properties props = new Properties();
         DBConnections bonnect = new DBConnections();
         Poes_keys key = new Poes_keys();
+        kovacs_keys latchKey = new kovacs_keys();
         List<String> results = new ArrayList<>();
 
             System.out.println("\n*****************************************************************\n");
@@ -119,21 +120,22 @@ public class Gatekeeper
                     do
                     {
                         ResultSet authenticator_results = bonnect.auth_db_conn(signatore, hanjock);
-                        System.out.println("\t\t// Active Connection "); TimeUnit.SECONDS.sleep(1);
+                        System.out.println("\t\t// Active Connection ");
 
 
                         if(authenticator_results.next())
                         {
                             String role = authenticator_results.getString("role");
-            
+
                             System.out.println("\nWhat would you like to do?\n");
                             System.out.println("0: Insert a record");
                             System.out.println("1: Retrieve record");
                             System.out.println("2: Update a record");
                             System.out.println("3: Retrieve (ALL) ");
                             System.out.println("4: Delete a record");
-                            System.out.println("5: Generate a random passphrase\n");
-                            System.out.print("Indicate by selecting a number (0-4): ");
+                            System.out.println("5: Create new user");
+                            System.out.println("6: Generate a random passphrase\n");
+                            System.out.print("Indicate by selecting a number (0-6): ");
                             int response = scan.nextInt();
                             
                             switch(response)
@@ -146,11 +148,7 @@ public class Gatekeeper
                                         POE = bonnect.secretdbConnect();
                                         
                                         System.out.println("\n######################################\n");
-                                        
-                                        System.out.println("Input Credentials --> ");
                                         key.insert_acct(POE, role);
-                                        System.out.println("\n\t <<< Entry added >>>");
-                                        
                                         System.out.println("\n######################################\n");
                                 
                                     } catch (Exception e) {
@@ -235,10 +233,25 @@ public class Gatekeeper
                                     }
                                 break;
 
-                                case 5 :
+                                case 5:
+                                    try {
+                                        POE = bonnect.sensitive_secretdb_auth();
+
+                                        System.out.println("\n######################################\n");
+                                        latchKey.the_creation(POE, role);
+                                        System.out.println("\n######################################\n");
+                                        
+
+                                    } catch (Exception e) {
+                                        logger.warning("Database operation failed.");
+                                    }
+                                break;
+
+                                case 6 :
                                     // rudimentary implementation of the random generator.
                                     System.out.println("Generating Random password... ");
                                     key.randomPasswordgen();
+                                break;
                         }
                         } else {
                             System.out.println("Access Denied!\n"); TimeUnit.SECONDS.sleep(2);

@@ -1,5 +1,6 @@
 package main;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,6 +12,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.*;
 
 import AccessControl.IngressMGMT;
+import hashlings.hashIT;
+
 
 public class Poes_keys 
 {
@@ -35,7 +38,7 @@ public class Poes_keys
     public List<String> retrieveAll(Connection conn, String role) throws SQLException
     {
         IngressMGMT access = new IngressMGMT();
-        if(!access.hasPermission(role, "READ1"))
+        if(!access.hasPermission_ACCT(role, "READ_ALL"))
         {
             System.out.println("ACCESS DENIED: insufficent privileges to access this resource. ");
         }
@@ -67,7 +70,7 @@ public class Poes_keys
     public void update_acct(Connection conn, String role) throws SQLException
     {
         IngressMGMT access = new IngressMGMT();
-        if(!access.hasPermission(role, "UPDATE"))
+        if(!access.hasPermission_ACCT(role, "UPDATE_ACCT"))
         {
             System.out.println("ACCESS DENIED: insufficient privileges to access this resource. ");
             return;
@@ -145,7 +148,7 @@ public class Poes_keys
     public List<String> retrieve_acct(Connection conn, String role) throws SQLException
     {
         IngressMGMT access = new IngressMGMT();
-        if(!access.hasPermission(role, "READ2"))
+        if(!access.hasPermission_ACCT(role, "READ_SOME"))
         {
             System.out.println("ACCESS DENIED: insufficient privileges to access this resource. ");
         }
@@ -186,7 +189,7 @@ public class Poes_keys
     public void delete_acct(Connection conn, String role) throws SQLException
     {
         IngressMGMT access = new IngressMGMT();
-        if(!access.hasPermission(role, "DELETE"))
+        if(!access.hasPermission_ACCT(role, "DELETE_ACCT"))
         {
             System.out.println("ACCESS DENIED: insufficient privileges to accss this resource. ");
             return;
@@ -213,7 +216,7 @@ public class Poes_keys
     {
         IngressMGMT access = new IngressMGMT();
 
-        if(!access.hasPermission(role, "INSERT"))
+        if(!access.hasPermission_ACCT(role, "INSERT_ACCT"))
         {
             System.out.println("ACCESS DENIED: insufficient privileges to access this resource. ");
             return;
@@ -221,6 +224,8 @@ public class Poes_keys
         @SuppressWarnings("resource")
         Scanner scan = new Scanner(System.in);
         String insert_query = "INSERT INTO sensitive_data (web_addr, monogram, signatory) VALUES (?, ?, ?)";
+
+        System.out.println("Input Credentials --> ");
 
         //Get new entry from user
         System.out.print("\n---> url addr: "); 
@@ -230,6 +235,7 @@ public class Poes_keys
         System.out.print("---> username: "); 
         String user_entry = scan.nextLine();
         System.out.println("\nLogging info... \n");
+        System.out.println("\n\t <<< Entry added >>>");
         
 
         try
