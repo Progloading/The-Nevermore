@@ -113,11 +113,11 @@ public class Gatekeeper
                     do
                     {
                         ResultSet authenticator_results = bonnect.auth_db_conn(signatore, hanjock);
-                        System.out.println("\t\t// Active Connection ");
-
 
                         if(authenticator_results.next())
                         {
+                            System.out.println("\t\t// Active Connection ");
+
                             String role = authenticator_results.getString("role");
 
                             System.out.println("\nWhat would you like to do?\n");
@@ -243,14 +243,24 @@ public class Gatekeeper
                                 break;
 
                                 case 6:
+
+                                    System.out.println("\n######################################\n");
+
                                     System.out.println("User TBD (NOT DATA INFORMATION)");
+
+                                    System.out.println("\n######################################\n");
                                 break;
 
                                 case 7 :
                                     // Rudimentary implementation of the random generator.
+                                    System.out.println("\n######################################\n");
+
                                     String new_key = key.randomPasswordgen();
                                     System.out.println("This is the new key: " + new_key);
+
+                                    System.out.println("\n######################################\n");
                                 break;
+
                         }
                         } else {
                             System.out.println("Access Denied!\n"); TimeUnit.SECONDS.sleep(2);
@@ -273,7 +283,8 @@ public class Gatekeeper
                     } while(keepGoing);
                 } catch (Exception e)
                 {
-                    logger.warning("Database operation failed.");
+                    e.printStackTrace();
+                    //logger.warning("Database operation failed.");
                 }
 
     }

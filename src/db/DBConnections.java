@@ -30,7 +30,7 @@ public class DBConnections {
     public static hashIT hashing = new hashIT();
 
 
-    public ResultSet auth_db_conn(String signatore, String hanjock) throws FileNotFoundException, IOException, SQLException, InterruptedException, NoSuchAlgorithmException
+    public ResultSet auth_db_conn(String signatore, String hanjock) throws FileNotFoundException, IOException, NoSuchAlgorithmException, SQLException, InterruptedException 
     {
         ResultSet authenticator_results;
 
@@ -47,30 +47,32 @@ public class DBConnections {
             // This will be implemented as it's own function in later days, sault. For now, manual it is ==>    
             String sault = poe.getProperty("root_saultKING"); 
 
+            Connection authenticator_bond = DriverManager.getConnection(authenticator_url, authenticator_user, authenticator_pass); TimeUnit.SECONDS.sleep(1);
+            System.out.println("\nProcessing... \n");
 
-        Connection authenticator_bond = DriverManager.getConnection(authenticator_url, authenticator_user, authenticator_pass); TimeUnit.SECONDS.sleep(3);
-        System.out.println("\nProcessing... \n");
-
-        // Set parameters based on given input
-        String authenticator_query = "SELECT role, auth_SALT FROM authenticator_credentials_locale WHERE auth_usr = ? AND auth_pass = ?";
-        PreparedStatement authenticator_stmt = authenticator_bond.prepareStatement(authenticator_query);
+            // Set parameters based on given input
+            String authenticator_query = "SELECT role FROM authenticator_credentials_locale WHERE auth_usr=? AND auth_pass=?";
+            PreparedStatement authenticator_stmt = authenticator_bond.prepareStatement(authenticator_query);
                         
         
-        // Decode hashed password and set parameters
-        // Salt can be ingested using ResultSet but to save time I've decided to 
-        // use a variable.
-        // <<< CAVEAT: code must be modified upon switching user accounts >>>
-        //      ## Temporary Fix: if-statment to toggle between accounts dynamically
+            // Decode hashed password and set parameters
+            // Salt can be ingested using ResultSet but to save time I've decided to 
+            // use a variable.
+            // <<< CAVEAT: code must be modified upon switching user accounts >>>
+            //      ## Temporary Fix: if-statment to toggle between accounts dynamically
         
                 String decoded = hashing.hashStew(hanjock, sault);
+                System.out.println("\n");
+
                     authenticator_stmt.setString(1, signatore);
                     authenticator_stmt.setString(2, decoded);
                                    
         
-        authenticator_results = authenticator_stmt.executeQuery();
+            authenticator_results = authenticator_stmt.executeQuery();
+            return authenticator_results;
 
-
-        return authenticator_results;
+        //return authenticator_results;
+        
     }
 
     public Connection sensitive_secretdb_auth() throws SQLException

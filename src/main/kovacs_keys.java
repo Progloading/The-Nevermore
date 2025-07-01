@@ -36,11 +36,12 @@ public class kovacs_keys
         String auth_user = scan.nextLine();
         System.out.print("Enter password: ");
         String auth_pass = scan.nextLine();
-        System.out.print("Enter role: ");
+        System.out.print("Enter role (guest o user): ");
         String auth_role = scan.nextLine();
 
         String sault = key.passTheSalt(16);
         String hash_ = key.hashStew(auth_pass, sault);
+
 
         try
         {   TimeUnit.SECONDS.sleep(2);
@@ -50,13 +51,15 @@ public class kovacs_keys
             data_stmt.setString(1, auth_user);
             data_stmt.setString(2, sault);
             data_stmt.setString(3, hash_);
-            data_stmt.setString(3, auth_role);
+            data_stmt.setString(4, auth_role);
             data_stmt.executeUpdate();
             
             data_stmt.close();
         } catch (Exception e){
             logger.warning("Database operation failed.");
         }
+
+        System.out.println("\n\t<<< New User Instantiated >>>");
 
     }
 
